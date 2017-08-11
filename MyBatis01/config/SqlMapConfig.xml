@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration 
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- 和Spring整合后这里的配置就不需要了 -->
+	<environments default="development">
+		<environment id="development">
+			<!-- 使用jdbc进行事务管理 -->
+			<transactionManager type="JDBC"></transactionManager>
+			
+			<!-- 设置数据源 -->
+			<dataSource type="POOLED">
+				<property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
+				<property name="url" value="jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.14.218.22)(PORT=1555)))(CONNECT_DATA=(SERVICE_NAME=u1wjbloan)))"/>
+				<property name="username" value="rcpmopr"/>
+				<property name="password" value="test1234"/>
+			</dataSource>
+		</environment>
+	
+	</environments>
+	
+	<!-- 加载自定义映射文件 -->
+	<mappers>
+		<mapper resource="sqlmap/Batchtask.xml"/>
+	</mappers>
+	
+	
+</configuration>

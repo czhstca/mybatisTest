@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace:命名空间,对sql进行分类管理，sql隔离 
+注：使用Mapper代理开发时，namespace还有别的重要作用！
+-->
+<mapper namespace="test">
+	
+	<!-- 通过select执行数据库查询 id：表示映射文件中的sql，也称为Statement的id -->
+	<!-- 将来sql语句都会封装到mappedStatement中 -->
+	<!-- parameterType:输入参数类型 -->
+	<!-- taskname表示接收输入参数的名称为taskname,如果参数类型为简单类型，参数名称可以任意英文 -->
+	<!-- resultType:指定sql输出结果映射的java对象,select指定resultType表示将单条记录映射成的Pojo对象 -->
+	<select id="findTaskByTaskName" parameterType="string" resultType="com.pingan.pojo.Task">
+		SELECT * FROM BATCHTASK_STATUS WHERE TASKNAME=#{taskname}
+	</select>
+	
+	<!-- 查询返回多条结果的sql -->
+	<!-- ${}表示拼接sql串，将接收到的参数不加任何修饰拼接在sql中,但注意，这个容易引起sql注入! -->
+	<!-- 接收输入参数的内容，如果传入的为简单类型，${}中只能写value -->
+	<select id="findTaskByTaskNamelike" parameterType="java.lang.String" resultType="com.pingan.pojo.Task">
+		SELECT * FROM BATCHTASK_STATUS WHERE TASKNAME LIKE '%${value}%'
+	</select>
+
+	<!-- 添加一条task记录 -->
+	<!-- 此时的输入参数是pojo,mybatis也是通过ognl获取对象的属性值 -->
+	<insert id="insertTask" parameterType="com.pingan.pojo.Task">
+		INSERT INTO BATCHTASK_STATUS(INPUTDATE,TARGETNAME,TASKNAME) VALUES (#{inputdate},#{targetname},#{taskname})
+	</insert>
+
+	<!-- 
+		添加记录后得到刚才新增数据的主键（mysql）(主键为自增情况下)
+		<insert id="insertTask" parameterType="com.pingan.pojo.Task">
+			注意，因为mysql中id是自增长的，所以这种写法在写insert语句时不需要再写id
+			INSERT INTO BATCHTASK_STATUS(INPUTDATE,TARGETNAME,TASKNAME) VALUES (#{inputdate},#{targetname},#{taskname})
+			
+			将插入数据的主键(id)返回，返回到task对象中
+			keyProperty:将插入的主键值放入TASK对象的id属性中
+			order:执行顺序为先insert数据，再将insert数据的主键放入TASK对象的id属性中
+			resultType:指定SELECT LAST_INSERT_ID()的结果类型
+			<selectKey keyProperty="id" order="AFTER"  resultType="java.lang.Integer">
+				SELECT LAST_INSERT_ID()  //得到刚执行插入insert的主键ID，但只能用于自增主键
+			</selectKey>
+		</insert>
+	
+	 -->
+	
+	
+	<!-- 非自增主键返回,可以使用mysql的  uuid()函数生成主键，此时id字段必须为String类型，长度设置为35位 -->
+	<!-- 先通过uuid（）查询出主键，再将主键放入sql中 -->
+	<!-- 注意，这种方法执行顺序为先将主键放入TASK对象中，再执行insert语句 -->
+	<!-- 
+		<selectKey keyProperty="id" order="BEFORE"  resultType="java.lang.String">
+				SELECT UUID() (MYSQL) /  SELECT 序列名.nextVal() (ORACLE)
+		</selectKey>
+		注意，使用这种写法必须在insert中把id属性也写上（因为id不是自增长的）
+		INSERT INTO BATCHTASK_STATUS(ID,INPUTDATE,TARGETNAME,TASKNAME) VALUES (#{id},#{inputdate},#{targetname},#{taskname})
+	 -->
+	 
+	 <!-- 更新TASK -->
+	 <!-- ParameterType应该为pojo,且更新的task的name值必须存在，否则会把所有记录全部进行更新 -->
+	 <update id="updateTask" parameterType="com.pingan.pojo.Task">
+	 	UPDATE BATCHTASK_STATUS SET TARGETNAME = #{targetname}  WHERE TASKNAME = #{taskname}
+	 </update>
+	 
+	 <!-- 删除TASK -->
+	 <delete id="deleteTask" parameterType="java.lang.String">
+	 	DELETE FROM BATCHTASK_STATUS WHERE TASKNAME = #{taskname}
+	 </delete>
+	 
+</mapper>
