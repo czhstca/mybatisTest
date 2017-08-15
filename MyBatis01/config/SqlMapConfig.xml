@@ -23,6 +23,8 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	<!-- 加载自定义映射文件 -->
 	<mappers>
 		<mapper resource="sqlmap/Batchtask.xml"/>
+		
+		<mapper resource="mapper/BatchtaskMapper.xml"/>
 	</mappers>
 	
 	

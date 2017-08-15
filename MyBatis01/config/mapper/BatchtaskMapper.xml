@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- 
+注意：使用Mapper代理开发时，namespace应该等于Mapper接口全路径!
+-->
+<mapper namespace="com.pingan.mapper.TaskMapper">
+	
+	<!-- 通过select执行数据库查询 id：表示映射文件中的sql，也称为Statement的id -->
+	<!-- 将来sql语句都会封装到mappedStatement中 -->
+	<!-- parameterType:输入参数类型 -->
+	<!-- taskname表示接收输入参数的名称为taskname,如果参数类型为简单类型，参数名称可以任意英文 -->
+	<!-- resultType:指定sql输出结果映射的java对象,select指定resultType表示将单条记录映射成的Pojo对象 -->
+	<select id="findTaskByTaskName" parameterType="string" resultType="com.pingan.pojo.Task">
+		SELECT * FROM BATCHTASK_STATUS WHERE TASKNAME=#{taskname}
+	</select>
+	
+	<!-- 查询返回多条结果的sql -->
+	<!-- ${}表示拼接sql串，将接收到的参数不加任何修饰拼接在sql中,但注意，这个容易引起sql注入! -->
+	<!-- 接收输入参数的内容，如果传入的为简单类型，${}中只能写value -->
+	<select id="findTaskByTaskNamelike" parameterType="java.lang.String" resultType="com.pingan.pojo.Task">
+		SELECT * FROM BATCHTASK_STATUS WHERE TASKNAME LIKE '%${value}%'
+	</select>
+
+	<!-- 添加一条task记录 -->
+	<!-- 此时的输入参数是pojo,mybatis也是通过ognl获取对象的属性值 -->
+	<insert id="insertTask" parameterType="com.pingan.pojo.Task">
+		INSERT INTO BATCHTASK_STATUS(INPUTDATE,TARGETNAME,TASKNAME) VALUES (#{inputdate},#{targetname},#{taskname})
+	</insert>
+
+	 <!-- 更新TASK -->
+	 <!-- ParameterType应该为pojo,且更新的task的name值必须存在，否则会把所有记录全部进行更新 -->
+	 <update id="updateTask" parameterType="com.pingan.pojo.Task">
+	 	UPDATE BATCHTASK_STATUS SET TARGETNAME = #{targetname}  WHERE TASKNAME = #{taskname}
+	 </update>
+	 
+	 <!-- 删除TASK -->
+	 <delete id="deleteTask" parameterType="java.lang.String">
+	 	DELETE FROM BATCHTASK_STATUS WHERE TASKNAME = #{taskname}
+	 </delete>
+	 
+</mapper>
