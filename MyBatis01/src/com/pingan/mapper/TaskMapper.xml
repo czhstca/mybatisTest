@@ -12,8 +12,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 将来sql语句都会封装到mappedStatement中 -->
 	<!-- parameterType:输入参数类型 -->
 	<!-- taskname表示接收输入参数的名称为taskname,如果参数类型为简单类型，参数名称可以任意英文 -->
-	<!-- resultType:指定sql输出结果映射的java对象,select指定resultType表示将单条记录映射成的Pojo对象 -->
-	<select id="findTaskByTaskName" parameterType="string" resultType="com.pingan.pojo.Task">
+	<!-- resultType:指定sql输出结果映射的java对象,select指定resultType表示将单条记录映射成的Pojo对象,这里的Task为别名 -->
+	<select id="findTaskByTaskName" parameterType="string" resultType="task">
 		SELECT * FROM BATCHTASK_STATUS WHERE TASKNAME=#{taskname}
 	</select>
 	

@@ -2,7 +2,32 @@
 <!DOCTYPE configuration 
 PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
 <configuration>
+
+	<!-- 加载属性文件(DB配置) -->
+	<properties resource="db.properties">  <!-- 这个文件中定义的属性第二优先被Mybatis加载 -->
+		<!-- 还可以配置一些属性名和属性值(这里定义的属性最先被Mybatis加载) -->
+		<!-- 建议：不要在这里定义任何属性，只将属性值定义在properties属性中,且命名最好有一定特殊性  XXXX.XXX.XXX -->
+	</properties>
+	
+	<!-- Mybatis的全局参数设置，如二级缓存，延迟加载 -->
+	<!-- <settings>
+		<setting name="" value=""/>
+	</settings> -->
+	
+	<!-- 自定义别名 -->
+	<typeAliases>
+		<!-- 针对单个别名定义 -->
+		<!-- <typeAlias type="com.pingan.pojo.Task" alias="Task"/> -->
+		
+		<!-- 批量别名定义，Mybatis自动将类名定义为别名 (常用)-->
+		<package name="com.pingan.pojo"/>
+	</typeAliases>
+	
+	<!-- typeHandler 类型处理器  比如将java类型转换为jdbc类型 -->
+	
+	
 	<!-- 和Spring整合后这里的配置就不需要了 -->
 	<environments default="development">
 		<environment id="development">
@@ -11,10 +36,11 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 			
 			<!-- 设置数据源 -->
 			<dataSource type="POOLED">
-				<property name="driver" value="oracle.jdbc.driver.OracleDriver"/>
-				<property name="url" value="jdbc:oracle:thin:@(DESCRIPTION=(ADDRESS_LIST=(ADDRESS=(PROTOCOL=TCP)(HOST=10.14.218.22)(PORT=1555)))(CONNECT_DATA=(SERVICE_NAME=u1wjbloan)))"/>
-				<property name="username" value="rcpmopr"/>
-				<property name="password" value="test1234"/>
+				<!-- 这里定义的属性最后被Mybatis加载 -->
+				<property name="driver" value="${jdbc.driver}"/>
+				<property name="url" value="${jdbc.url}"/>
+				<property name="username" value="${jdbc.username}"/>
+				<property name="password" value="${jdbc.password}"/>
 			</dataSource>
 		</environment>
 	
@@ -22,9 +48,16 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 	
 	<!-- 加载自定义映射文件 -->
 	<mappers>
-		<mapper resource="sqlmap/Batchtask.xml"/>
+		<!-- 一次加载一个映射文件 -->
+		<!-- <mapper resource="sqlmap/Batchtask.xml"/>
+		<mapper resource="mapper/BatchtaskMapper.xml"/> -->
 		
-		<mapper resource="mapper/BatchtaskMapper.xml"/>
+		<!-- 通过Mapper接口加载一个映射文件 -->
+		<!-- 规范：Mapper接口类名和MapperXXX.xml映射文件名保持一致，且在同一个目录,但这个规范前提是使用了Mapper代理的开发方法 -->
+		<!-- <mapper class="com.pingan.mapper.TaskMapper"></mapper> -->
+		
+		<!-- 通过Mapper接口批量加载映射文件(推荐) -->
+		<package name="com.pingan.mapper"/>
 	</mappers>
 	
 	
