@@ -10,8 +10,8 @@ public class TaskDaoImp implements TaskDao {
 
 	private SqlSessionFactory factory;
 	
-	//×¢ÈëSqlSessionFactory
-	//´Ë´¦Î´ºÍSpringÕûºÏ£¬Ä£ÄâÍ¨¹ı¹¹Ôìº¯Êı×¢Èë
+	//æ³¨å…¥SqlsessionFactory
+	//å’ŒSpringæ•´åˆåå°±ç”±Springè´Ÿè´£
 	public TaskDaoImp(SqlSessionFactory factory){
 		this.factory = factory;
 	}
@@ -19,7 +19,7 @@ public class TaskDaoImp implements TaskDao {
 	
 	@Override
 	public Task selectTaskByTaskName(String taskName) throws Exception {
-		// SqlsessionÊÇÏß³Ì²»°²È«µÄ£¬¶¨ÒåÔÚ¾Ö²¿·½·¨ÖĞ¿ÉÒÔ±ÜÃâ¶àÏß³Ì¹²Ïí±äÁ¿µ¼ÖÂµÄÊı¾İÒì³£
+		// Sqlsessionæ˜¯çº¿ç¨‹ä¸å®‰å…¨çš„ï¼Œæ‰€ä»¥ä¸€èˆ¬ä½œä¸ºæ–¹æ³•çš„å±€éƒ¨å˜é‡
 		SqlSession session = factory.openSession();
 		Task task = session.selectOne("test.findTaskByTaskName",taskName);
 		session.close();

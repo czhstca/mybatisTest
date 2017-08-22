@@ -3,30 +3,41 @@ package com.pingan.mapper;
 import java.util.List;
 
 import com.pingan.pojo.Task;
+import com.pingan.pojo.TaskCustom;
+import com.pingan.vo.TaskVo;
 
 /**
- * mybatisµÄMapper½Ó¿Ú
+ * mybatisçš„Mapperæ¥å£
  * @author EX_WLJR_CHENZEHUA
  *
  */
 public interface TaskMapper {
 	
-	//Mapper¿ª·¢¹æ·¶:
-	//×¢Òâ£ºÊ¹ÓÃMapper´úÀí¿ª·¢Ê±£¬½Ó¿ÚÖĞ·½·¨ÃûÓ¦¸ÃºÍMapper.xmlÖĞÅäÖÃµÄstatementidÒ»ÖÂ!
-	//Mapper½Ó¿ÚÖĞ·½·¨µÄ²ÎÊıÀàĞÍÓ¦¸ÃºÍxmlÖĞparameterTypeÖ¸¶¨ÀàĞÍÒ»ÖÂ!
-	//Mapper½è¿ÚÖĞµÄ·µ»ØÖµÀàĞÍÓ¦¸ÃºÍxmlÖĞresultTypeÖ¸¶¨ÀàĞÍÒ»ÖÂ!
-	//Ê¹ÓÃMapper´úÀí¿ª·¢Ê±£¬xmlÖĞnamespaceÓ¦¸ÃÎªMapper½Ó¿ÚÎÄ¼şÈ«Â·¾¶!
+	//Mapperç¼–å†™è§„èŒƒ:
+	//Mapperæ¥å£ä¸­çš„æ–¹æ³•å¿…é¡»å’ŒMapper.xmlä¸­çš„statementçš„idä¿æŒä¸€è‡´
+	//Mapperæ¥å£æ–¹æ³•ä¸­çš„è¾“å…¥å‚æ•°ç±»å‹å¿…é¡»å’ŒMapper.xmlä¸­çš„ParameterTypeç±»å‹ä¸€è‡´
+	//Mapperæ¥å£æ–¹æ³•çš„è¿”å›ç±»å‹å¿…é¡»å’ŒMapper.xmlä¸­çš„resultTypeç±»å‹ä¸€è‡´
+	//Mapper.xmlä¸­çš„namespaceå¿…é¡»ä¸ºMapperæ¥å£çš„å…¨è·¯å¾„!
 	
-	//¸ù¾İtaskname²éÑ¯µ¥¸ötaskĞÅÏ¢
+	//æ ¹æ®tasknameæŸ¥è¯¢taskä¿¡æ¯
 	public Task findTaskByTaskName(String taskName) throws Exception;
 	
-	//¸ù¾İtasknameÄ£ºı²éÑ¯¶à¸öTaskĞÅÏ¢(´úÀí¶ÔÏó»á¸ù¾İĞèÒª·µ»ØµÄ¶ÔÏóÀàĞÍ×Ô¶¯Ñ¡Ôñµ÷ÓÃselectOne »òÕß  selectList)
+	//æ ¹æ®tasknameæŸ¥è¯¢taskä¿¡æ¯(åŠ¨æ€ä»£ç†å¯¹è±¡ä¼šè‡ªåŠ¨æ ¹æ®è¿”å›ç±»å‹å†³å®šè°ƒç”¨selectList/selectOne)
 	public List<Task> findTaskByTaskNamelike(String taskName) throws Exception;
 	 
-	//Ìí¼ÓtaskĞÅÏ¢
+	//æ–°å¢taskä¿¡æ¯
 	public void insertTask(Task task) throws Exception;
 	
-	//¸ù¾İtasknameÉ¾³ıtaskĞÅÏ¢
+	//æ ¹æ®tasknameåˆ é™¤taskä¿¡æ¯
 	public void deleteTask(String taskName) throws Exception;
+	
+	//Taskä¿¡æ¯ç»¼åˆæŸ¥è¯¢
+	public List<TaskCustom> findTaskList(TaskVo taskVo) throws Exception;
+	
+	//Taskä¿¡æ¯ç»¼åˆæŸ¥è¯¢è®°å½•æ•°
+	public int findTaskCount(TaskVo taskVo) throws Exception;
+	
+	//æµ‹è¯•resultMap
+	public  Task findTaskByTaskNameResultMap(String taskName) throws Exception;
 	
 }

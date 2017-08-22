@@ -3,18 +3,18 @@ package com.pingan.dao;
 import com.pingan.pojo.Task;
 
 /**
- * 任务管理的dao
+ * Taskdao
  * @author EX_WLJR_CHENZEHUA
  *
  */
 public interface TaskDao {
 
-	//根据taskname查询task信息
+	//鏍规嵁taskname鏌ヨTask淇℃伅
 	public Task selectTaskByTaskName(String taskName) throws Exception;
 	
-	//添加task信息
+	//鏂板task
 	public void insertTask(Task task) throws Exception;
 	
-	//根据taskname删除task信息
+	//鏍规嵁taskname鍒犻櫎Task淇℃伅
 	public void deleteTask(String taskName) throws Exception;
 }

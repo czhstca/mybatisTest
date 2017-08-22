@@ -3,6 +3,7 @@ package com.pingan.mapper.test;
 import static org.junit.Assert.*;
 
 import java.io.InputStream;
+import java.util.List;
 
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -14,6 +15,8 @@ import org.junit.Test;
 import com.pingan.daoImp.TaskDaoImp;
 import com.pingan.mapper.TaskMapper;
 import com.pingan.pojo.Task;
+import com.pingan.pojo.TaskCustom;
+import com.pingan.vo.TaskVo;
 
 public class TaskMapperTest {
 
@@ -21,12 +24,12 @@ public class TaskMapperTest {
 	
 	@Before
 	public void setUp() throws Exception {
-		//²âÊÔ·½·¨Ö®Ç°Ö´ĞĞ
-		//1.´´½¨SqlSessionFactory
+		//ï¿½ï¿½ï¿½Ô·ï¿½ï¿½ï¿½Ö®Ç°Ö´ï¿½ï¿½
+		//1.ï¿½ï¿½ï¿½ï¿½SqlSessionFactory
 		
-		//¶¨ÒåÅäÖÃÎÄ¼ş
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
 		String resource = "SqlMapConfig.xml";
-		//ÏòÁ÷ÖĞ·ÅÈëmybatisÖ÷ÅäÖÃĞÅÏ¢
+		//ï¿½ï¿½ï¿½ï¿½ï¿½Ğ·ï¿½ï¿½ï¿½mybatisï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 		InputStream is = Resources.getResourceAsStream(resource);
 		factory = new SqlSessionFactoryBuilder().build(is);
 	}
@@ -36,13 +39,70 @@ public class TaskMapperTest {
 		
 		SqlSession session = factory.openSession();
 		
-		//´´½¨Mapper´úÀí¶ÔÏó,Mybatis×Ô¶¯Éú³É´úÀí¶ÔÏó
+		//ï¿½ï¿½ï¿½ï¿½Mapperï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,Mybatisï¿½Ô¶ï¿½ï¿½ï¿½ï¿½É´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 		TaskMapper taskMapper = session.getMapper(TaskMapper.class);
 		
-		//µ÷ÓÃTaskMapper·½·¨
+		//ï¿½ï¿½ï¿½ï¿½TaskMapperï¿½ï¿½ï¿½ï¿½
 		Task task = taskMapper.findTaskByTaskName("BatchXBRepay");
 		
 		System.out.println(task.toString());
 	}
+	
+	//æµ‹è¯•taskç»¼åˆä¿¡æ¯æŸ¥è¯¢
+	@Test
+	public void testfindTaskList() throws Exception {
+		SqlSession session = factory.openSession();
+		
+		//ï¿½ï¿½ï¿½ï¿½Mapperï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,Mybatisï¿½Ô¶ï¿½ï¿½ï¿½ï¿½É´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		TaskMapper taskMapper = session.getMapper(TaskMapper.class);
+		
+		//åˆ›å»ºåŒ…è£…å¯¹è±¡
+		TaskVo tv = new TaskVo();
+		TaskCustom custom = new TaskCustom();
+		custom.setTargetname("PMDeductData");
+		custom.setTaskname("Split");
+		tv.setTaskCustom(custom);
+		
+		List<TaskCustom> taskList = taskMapper.findTaskList(tv);
+		
+		System.out.println(taskList.toString());
+	}
 
+	//æµ‹è¯•taskç»¼åˆä¿¡æ¯æŸ¥è¯¢è®°å½•æ•°
+	@Test
+	public void testfindTaskCount() throws Exception{
+		SqlSession session = factory.openSession();
+		
+		//ï¿½ï¿½ï¿½ï¿½Mapperï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,Mybatisï¿½Ô¶ï¿½ï¿½ï¿½ï¿½É´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		TaskMapper taskMapper = session.getMapper(TaskMapper.class);
+		
+		//åˆ›å»ºåŒ…è£…å¯¹è±¡
+		TaskVo tv = new TaskVo();
+		TaskCustom custom = new TaskCustom();
+		custom.setTargetname("PMDeductData");
+		custom.setTaskname("Split");
+		tv.setTaskCustom(custom);
+		
+		int count = taskMapper.findTaskCount(tv);
+		
+		System.out.println(count);
+		
+	}
+	
+	//æµ‹è¯•resultMap
+	@Test
+	public void testfindTaskByTaskNameResultMap() throws Exception{
+		SqlSession session = factory.openSession();
+		
+		//ï¿½ï¿½ï¿½ï¿½Mapperï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½,Mybatisï¿½Ô¶ï¿½ï¿½ï¿½ï¿½É´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+		TaskMapper taskMapper = session.getMapper(TaskMapper.class);
+		
+		//ï¿½ï¿½ï¿½ï¿½TaskMapperï¿½ï¿½ï¿½ï¿½
+		Task task = taskMapper.findTaskByTaskNameResultMap("PMgetFCRDeductFileESB");
+		
+		System.out.println(task.toString());
+		
+		
+	}
+	
 }

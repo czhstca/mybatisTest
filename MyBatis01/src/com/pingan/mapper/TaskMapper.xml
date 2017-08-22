@@ -10,9 +10,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 通过select执行数据库查询 id：表示映射文件中的sql，也称为Statement的id -->
 	<!-- 将来sql语句都会封装到mappedStatement中 -->
-	<!-- parameterType:输入参数类型 -->
+	<!-- parameterType:输入参数类型 :基本类型、HashMap、POJO、包装后的POJO-->
 	<!-- taskname表示接收输入参数的名称为taskname,如果参数类型为简单类型，参数名称可以任意英文 -->
 	<!-- resultType:指定sql输出结果映射的java对象,select指定resultType表示将单条记录映射成的Pojo对象,这里的Task为别名 -->
+	<!-- 如果resultType作为输出映射，只有查询出的列名和POJO中属性名一致，该列才能映射成功! -->
+	<!-- 如果查询出列名和POJO属性名全都不一致，不会创建POJO对象 -->
+	<!-- 只要查询出列名只要有一个和POJO属性名一样，就会创建POJO对象 -->
+	<!-- resultType可以为简单类型(结果只有一列时)，字符串，POJO，List<POJO> -->
 	<select id="findTaskByTaskName" parameterType="string" resultType="task">
 		SELECT * FROM BATCHTASK_STATUS WHERE TASKNAME=#{taskname}
 	</select>
@@ -40,5 +44,40 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	 <delete id="deleteTask" parameterType="java.lang.String">
 	 	DELETE FROM BATCHTASK_STATUS WHERE TASKNAME = #{taskname}
 	 </delete>
+	 
+	 
+	 <!-- Task信息综合查询 -->
+	 <!-- 通过对象导航方式获取pojo包装类的属性条件 -->
+	 <select id="findTaskList" parameterType="com.pingan.vo.TaskVo" resultType="com.pingan.pojo.TaskCustom">
+	 	select * from batchtask_status where targetname=#{taskCustom.targetname} and taskname LIKE '%${taskCustom.taskname}%'
+	 </select>
+	 
+	 <!-- batchtask_status表符合条件记录数(resultType为简单类型)-->
+	 <select id="findTaskCount" parameterType="com.pingan.vo.TaskVo" resultType="int">
+	 	select count(*) from batchtask_status where targetname=#{taskCustom.targetname} and taskname LIKE '%${taskCustom.taskname}%'
+	 </select>
+	 
+	 
+	 <!-- 定义resultMap -->
+	 <!-- 将 select targetname target_, taskname task_ 和Task中的属性作映射-->
+	 <!-- type:resultType最终映射的对象 TASK -->
+	 <!-- id:对resultMap的唯一标识 -->
+	 <resultMap type="com.pingan.pojo.Task" id="taskResultMap">
+		<!-- id表示查询结果集中唯一标识 -->
+		<!-- column:查询出的列名 -->
+		<!-- property:POJO中对应属性名 -->
+		<!-- <id column="task_" property="taskname"/> -->
+		<!-- result表示对普通列的定义 -->
+		<result column="task_" property="taskname"/>
+	 </resultMap>
+	 
+	 <!-- resultType查询出的列名和POJO属性值不一致，可以通过定义一个resultMap对列名和属性名之间做映射! -->
+	 <!-- 1.定义resultMap -->
+	 <!-- 2.使用resultMap作为statement的输出映射类型 -->
+	 <!-- 注意如果定义的resultMap在其他文件中，前面要加namespace -->
+	 <select id="findTaskByTaskNameResultMap" parameterType="java.lang.String" resultMap="taskResultMap">
+	 	select taskname task_ from batchtask_status where taskname=#{taskname}
+	 </select>
+	 
 	 
 </mapper>

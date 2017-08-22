@@ -12,94 +12,94 @@ import org.junit.Test;
 import com.pingan.pojo.Task;
 
 /**
- * MybatisÈëÃÅ³ÌĞò
+ * Mybatiså…¥é—¨ç¨‹åº
  * @author EX_WLJR_CHENZEHUA
  *
  */
 public class MyBatisFirst {
 
 	/**
-	 * ¸ù¾İtaskname²éÑ¯taskĞÅÏ¢,Ö»µÃµ½Ò»Ìõ¼ÇÂ¼½á¹û
+	 * æ ¹æ®tasknameæŸ¥æ‰¾Taskä¿¡æ¯
 	 * @throws Exception
 	 */
 	@Test
 	public void findTaskByTaskName() throws Exception{
-		//1.´´½¨SqlSessionFactory
+		//1.åˆ›å»ºSqlSessionFactory
 		
-		//¶¨ÒåÅäÖÃÎÄ¼ş
+		//å®šä¹‰myBatisé…ç½®æ–‡ä»¶è·¯å¾„
 		String resource = "SqlMapConfig.xml";
-		//ÏòÁ÷ÖĞ·ÅÈëmybatisÖ÷ÅäÖÃĞÅÏ¢
+		//åŠ è½½é…ç½®æ–‡ä»¶
 		InputStream is = Resources.getResourceAsStream(resource);
 		SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(is);
 		
-		//2.µÃµ½SqlSession
+		//2.åˆ›å»ºaSqlSession
 		SqlSession session = factory.openSession();
 		
-		//3.Í¨¹ıSqlSession²Ù×÷Êı¾İ¿â
-		//Ö»²éÕÒÒ»Ìõ¼ÇÂ¼
-		//µÚÒ»¸ö²ÎÊı£ºStatementµÄid£¬ÃüÃû¿Õ¼ä+"."+id
-		//µÚ¶ş¸ö²ÎÊı: parameter
+		//3.Í¨ä½¿ç”¨sqlSessionæ“çºµæ•°æ®åº“
+		//selectOne æŸ¥è¯¢ä¸€æ¡æ•°æ®
+		//å‚æ•°1ï¼šMapper.xmlä¸­å®šä¹‰çš„namespace+"."+statement id
+		//å‚æ•°2:whereæ¡ä»¶çš„å…·ä½“å€¼
 		Task task = session.selectOne("test.findTaskByTaskName", "BatchXBRepay");
 		
 		System.out.println(task.toString());
 		
-		//ÊÍ·Å×ÊÔ´
+		//å…³é—­èµ„æº
 		session.close();
 		is.close();
 		
 	}
 	
 	/**
-	 * ¸ù¾İÈÎÎñÃûÄ£ºı²éÑ¯ÈÎÎñĞÅÏ¢
+	 * ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä£ï¿½ï¿½ï¿½ï¿½Ñ¯ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	 */
 	@Test
 	public void findTaskByTaskNameLike() throws Exception{
-		//1.´´½¨SqlSessionFactory
+		//1.ï¿½ï¿½ï¿½ï¿½SqlSessionFactory
 		
-		//¶¨ÒåÅäÖÃÎÄ¼ş
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
 		String resource = "SqlMapConfig.xml";
-		//ÏòÁ÷ÖĞ·ÅÈëmybatisÖ÷ÅäÖÃĞÅÏ¢
+		//ï¿½ï¿½ï¿½ï¿½ï¿½Ğ·ï¿½ï¿½ï¿½mybatisï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 		InputStream is = Resources.getResourceAsStream(resource);
 		SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(is);
 		
-		//2.µÃµ½SqlSession
+		//2.ï¿½Ãµï¿½SqlSession
 		SqlSession session = factory.openSession();
 		
-		//3.Í¨¹ıSqlSession²Ù×÷Êı¾İ¿â
-		//ÕâÀï¿ÉÄÜ²éÑ¯µÄ½á¹û»á·µ»Ø¶àÌõ¼ÇÂ¼
-		//µÚÒ»¸ö²ÎÊı£ºStatementµÄid£¬ÃüÃû¿Õ¼ä+"."+id
-		//µÚ¶ş¸ö²ÎÊı: parameter
+		//3.Í¨ï¿½ï¿½SqlSessionï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ü²ï¿½Ñ¯ï¿½Ä½ï¿½ï¿½ï¿½á·µï¿½Ø¶ï¿½ï¿½ï¿½ï¿½ï¿½Â¼
+		//ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Statementï¿½ï¿½idï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½+"."+id
+		//ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: parameter
 		List<Task> taskList = session.selectList("test.findTaskByTaskNamelike", "File");
 		
 		for(Task task : taskList){
 			System.out.println(task.toString());
 		}
 		
-		//ÊÍ·Å×ÊÔ´
+		//ï¿½Í·ï¿½ï¿½ï¿½Ô´
 		session.close();
 		is.close();
 		
 	}
 	
 	/**
-	 * ĞÂÔöÒ»ÌõÈÎÎñĞÅÏ¢
+	 * ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	 */
 	@Test
 	public void insertTask() throws Exception{
-		//1.´´½¨SqlSessionFactory
+		//1.ï¿½ï¿½ï¿½ï¿½SqlSessionFactory
 		
-		//¶¨ÒåÅäÖÃÎÄ¼ş
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
 		String resource = "SqlMapConfig.xml";
-		//ÏòÁ÷ÖĞ·ÅÈëmybatisÖ÷ÅäÖÃĞÅÏ¢
+		//ï¿½ï¿½ï¿½ï¿½ï¿½Ğ·ï¿½ï¿½ï¿½mybatisï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 		InputStream is = Resources.getResourceAsStream(resource);
 		SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(is);
 		
-		//2.µÃµ½SqlSession
+		//2.ï¿½Ãµï¿½SqlSession
 		SqlSession session = factory.openSession();
 		
-		//3.Í¨¹ıSqlSession²Ù×÷Êı¾İ¿â
-		//µÚÒ»¸ö²ÎÊı£ºStatementµÄid£¬ÃüÃû¿Õ¼ä+"."+id
-		//µÚ¶ş¸ö²ÎÊı: parameter
+		//3.Í¨ï¿½ï¿½SqlSessionï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½
+		//ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Statementï¿½ï¿½idï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½+"."+id
+		//ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: parameter
 		Task task = new Task();
 		task.setInputdate("2017/08/10");
 		task.setTargetname("target11");
@@ -107,81 +107,81 @@ public class MyBatisFirst {
 		
 		int count = session.insert("test.insertTask", task);
 		
-		//×¢Òâ£¬ÔÚmysqlÖĞ£¬insertÖ®ºó¿ÉÒÔµ÷ÓÃmysql¶ÀÓĞµÄº¯Êı  LAST_INSERT_ID()
-		//Í¨¹ıÕâ¸öº¯Êı¿ÉÒÔ»ñÈ¡¸Õ²ÅinsertÊı¾İµÄÖ÷¼üĞÅÏ¢(Ö÷¼ü±ØĞëÎª×ÔÔö)
+		//×¢ï¿½â£¬ï¿½ï¿½mysqlï¿½Ğ£ï¿½insertÖ®ï¿½ï¿½ï¿½ï¿½Ôµï¿½ï¿½ï¿½mysqlï¿½ï¿½ï¿½ĞµÄºï¿½ï¿½ï¿½  LAST_INSERT_ID()
+		//Í¨ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô»ï¿½È¡ï¿½Õ²ï¿½insertï¿½ï¿½ï¿½İµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Îªï¿½ï¿½ï¿½ï¿½)
 		//task.getid();
 		
 		
-		//Ìá½»ÊÂÎñ
+		//ï¿½á½»ï¿½ï¿½ï¿½ï¿½
 		session.commit();
 		
-		//ÊÍ·Å×ÊÔ´
+		//ï¿½Í·ï¿½ï¿½ï¿½Ô´
 		session.close();
 		is.close();
 				
 	}
 	
 	/**
-	 * ¸ù¾İtaskname¸üĞÂÈÎÎñ
+	 * ï¿½ï¿½ï¿½ï¿½tasknameï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	 * @throws Exception
 	 */
 	@Test
 	public void updateTaskbyTaskName() throws Exception{
-		//1.´´½¨SqlSessionFactory
+		//1.ï¿½ï¿½ï¿½ï¿½SqlSessionFactory
 		
-		//¶¨ÒåÅäÖÃÎÄ¼ş
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
 		String resource = "SqlMapConfig.xml";
-		//ÏòÁ÷ÖĞ·ÅÈëmybatisÖ÷ÅäÖÃĞÅÏ¢
+		//ï¿½ï¿½ï¿½ï¿½ï¿½Ğ·ï¿½ï¿½ï¿½mybatisï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 		InputStream is = Resources.getResourceAsStream(resource);
 		SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(is);
 		
-		//2.µÃµ½SqlSession
+		//2.ï¿½Ãµï¿½SqlSession
 		SqlSession session = factory.openSession();
 		
-		//3.Í¨¹ıSqlSession²Ù×÷Êı¾İ¿â
-		//µÚÒ»¸ö²ÎÊı£ºStatementµÄid£¬ÃüÃû¿Õ¼ä+"."+id
-		//µÚ¶ş¸ö²ÎÊı: parameter
+		//3.Í¨ï¿½ï¿½SqlSessionï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½
+		//ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Statementï¿½ï¿½idï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½+"."+id
+		//ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: parameter
 		Task task = new Task();
 		task.setTargetname("target22");
 		task.setTaskname("task11");
 		
 		int count = session.update("test.updateTask", task);
 		
-		//Ìá½»ÊÂÎñ
+		//ï¿½á½»ï¿½ï¿½ï¿½ï¿½
 		session.commit();
 		
-		//ÊÍ·Å×ÊÔ´
+		//ï¿½Í·ï¿½ï¿½ï¿½Ô´
 		session.close();
 		is.close();
 	}
 	
 	/**
-	 * ¸ù¾İtaskNameÉ¾³ıtask
+	 * ï¿½ï¿½ï¿½ï¿½taskNameÉ¾ï¿½ï¿½task
 	 * @throws Exception
 	 */
 	@Test
 	public void deleteTask() throws Exception{
-		//1.´´½¨SqlSessionFactory
+		//1.ï¿½ï¿½ï¿½ï¿½SqlSessionFactory
 		
-		//¶¨ÒåÅäÖÃÎÄ¼ş
+		//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¼ï¿½
 		String resource = "SqlMapConfig.xml";
-		//ÏòÁ÷ÖĞ·ÅÈëmybatisÖ÷ÅäÖÃĞÅÏ¢
+		//ï¿½ï¿½ï¿½ï¿½ï¿½Ğ·ï¿½ï¿½ï¿½mybatisï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 		InputStream is = Resources.getResourceAsStream(resource);
 		SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(is);
 		
-		//2.µÃµ½SqlSession
+		//2.ï¿½Ãµï¿½SqlSession
 		SqlSession session = factory.openSession();
 		
-		//3.Í¨¹ıSqlSession²Ù×÷Êı¾İ¿â
-		//µÚÒ»¸ö²ÎÊı£ºStatementµÄid£¬ÃüÃû¿Õ¼ä+"."+id
-		//µÚ¶ş¸ö²ÎÊı: parameter
+		//3.Í¨ï¿½ï¿½SqlSessionï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½İ¿ï¿½
+		//ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Statementï¿½ï¿½idï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Õ¼ï¿½+"."+id
+		//ï¿½Ú¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½: parameter
 		
 		int count = session.delete("test.deleteTask", "task11");
 
-		//Ìá½»ÊÂÎñ
+		//ï¿½á½»ï¿½ï¿½ï¿½ï¿½
 		session.commit();
 		
-		//ÊÍ·Å×ÊÔ´
+		//ï¿½Í·ï¿½ï¿½ï¿½Ô´
 		session.close();
 		is.close();
 	}
