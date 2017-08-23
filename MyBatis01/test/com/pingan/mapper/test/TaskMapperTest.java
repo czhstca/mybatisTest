@@ -3,6 +3,7 @@ package com.pingan.mapper.test;
 import static org.junit.Assert.*;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.io.Resources;
@@ -59,8 +60,16 @@ public class TaskMapperTest {
 		//创建包装对象
 		TaskVo tv = new TaskVo();
 		TaskCustom custom = new TaskCustom();
+		//这里使用了动态sql拼接，如果不设置值，则相当于没有where条件拼接
 		custom.setTargetname("PMDeductData");
-		custom.setTaskname("Split");
+		//custom.setTaskname("Split");
+		//传入多个taskname
+		List<String> tasknameList = new ArrayList<String>();
+		tasknameList.add("PMSendDeductFile");
+		tasknameList.add("PMSplitFare");
+		tasknameList.add("PMSelectDeductDateError");
+		tv.setTasknameList(tasknameList);
+		
 		tv.setTaskCustom(custom);
 		
 		List<TaskCustom> taskList = taskMapper.findTaskList(tv);
@@ -79,6 +88,7 @@ public class TaskMapperTest {
 		//创建包装对象
 		TaskVo tv = new TaskVo();
 		TaskCustom custom = new TaskCustom();
+		//这里使用了动态sql拼接，如果不设置值，则相当于没有where条件拼接
 		custom.setTargetname("PMDeductData");
 		custom.setTaskname("Split");
 		tv.setTaskCustom(custom);

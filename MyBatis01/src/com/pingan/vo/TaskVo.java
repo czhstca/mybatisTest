@@ -1,5 +1,7 @@
 package com.pingan.vo;
 
+import java.util.List;
+
 import com.pingan.pojo.TaskCustom;
 
 /**
@@ -11,6 +13,17 @@ public class TaskVo {
 
 	//在这里可以包装任何需要进行复杂查询的条件
 	private TaskCustom taskCustom;
+	
+	//传入一个List,在查询条件带Or 或  in(....)时需要传入sql中
+	private List<String> tasknameList;
+
+	public List<String> getTasknameList() {
+		return tasknameList;
+	}
+
+	public void setTasknameList(List<String> tasknameList) {
+		this.tasknameList = tasknameList;
+	}
 
 	public TaskCustom getTaskCustom() {
 		return taskCustom;
