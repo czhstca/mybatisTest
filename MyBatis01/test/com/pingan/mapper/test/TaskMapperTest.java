@@ -17,6 +17,7 @@ import com.pingan.daoImp.TaskDaoImp;
 import com.pingan.mapper.TaskMapper;
 import com.pingan.pojo.Task;
 import com.pingan.pojo.TaskCustom;
+import com.pingan.utils.SqlSessionFactoryUtil;
 import com.pingan.vo.TaskVo;
 
 public class TaskMapperTest {
@@ -52,7 +53,7 @@ public class TaskMapperTest {
 	//测试task综合信息查询
 	@Test
 	public void testfindTaskList() throws Exception {
-		SqlSession session = factory.openSession();
+		SqlSession session = SqlSessionFactoryUtil.getSqlSession();
 		
 		//����Mapper�������,Mybatis�Զ����ɴ������
 		TaskMapper taskMapper = session.getMapper(TaskMapper.class);
@@ -111,8 +112,29 @@ public class TaskMapperTest {
 		Task task = taskMapper.findTaskByTaskNameResultMap("PMgetFCRDeductFileESB");
 		
 		System.out.println(task.toString());
+	}
+	
+	//一级缓存测试
+	@Test
+	public void testFirstCache() throws Exception{
+		SqlSession session = SqlSessionFactoryUtil.getSqlSession();
 		
+		TaskMapper taskMapper = session.getMapper(TaskMapper.class);
+		
+		//第一次发起请求，查询taskname为 BatchXBRepay 的任务
+		Task task = taskMapper.findTaskByTaskName("BatchXBRepay");
+		System.out.println(task);
+		
+		//如果在两次请求之间执行commit操作(更新、修改、删除动作)，则会清空一级缓存(避免脏读)!
+		//此时再发起请求就不会去缓存中找，而是直接去数据库查！
+		
+		//第二次请求，还是查询一样的任务
+		Task task2 = taskMapper.findTaskByTaskName("BatchXBRepay");
+		System.out.println(task);
+		session.close();
 		
 	}
+	
+	
 	
 }
