@@ -125,8 +125,10 @@ public class TaskMapperTest {
 		Task task = taskMapper.findTaskByTaskName("BatchXBRepay");
 		System.out.println(task);
 		
-		//如果在两次请求之间执行commit操作(更新、修改、删除动作)，则会清空一级缓存(避免脏读)!
+		//如果在同一个SqlSession的两次请求之间执行commit操作(更新、修改、删除动作)，则会清空一级缓存(避免脏读)!
 		//此时再发起请求就不会去缓存中找，而是直接去数据库查！
+		//taskMapper.updateTaskByTaskName("DeductData");
+		//session.commit();  必须有这句，否则不会清空一级缓存!
 		
 		//第二次请求，还是查询一样的任务
 		Task task2 = taskMapper.findTaskByTaskName("BatchXBRepay");
@@ -135,6 +137,36 @@ public class TaskMapperTest {
 		
 	}
 	
+	
+	//测试二级缓存
+	@Test
+	public void testSecondCache() throws Exception{
+		SqlSession session1 = SqlSessionFactoryUtil.getSqlSession();
+		SqlSession session2 = SqlSessionFactoryUtil.getSqlSession();
+		
+		TaskMapper taskMapper1 = session1.getMapper(TaskMapper.class);
+		TaskMapper taskMapper2 = session2.getMapper(TaskMapper.class);
+		
+		//第一次发起请求，查询taskname为 BatchXBRepay 的任务
+		Task task = taskMapper1.findTaskByTaskName("BatchXBRepay");
+		System.out.println(task);
+		
+		session1.close();
+		
+		//如果在两次Sqlsession请求之间执行commit操作(更新、修改、删除动作)，则会清空二级缓存(避免脏读)!
+		//此时再发起请求就不会去缓存中找，而是直接去数据库查！
+		//taskMapper3.updateTaskByTaskName("DeductData");
+		//session3.commit();  必须有这句，否则不会清空二级缓存!
+		
+		//第二次请求，还是查询一样的任务
+		Task task2 = taskMapper2.findTaskByTaskName("BatchXBRepay");
+		System.out.println(task);
+		session2.close();
+		
+		
+		
+		
+	}
 	
 	
 }

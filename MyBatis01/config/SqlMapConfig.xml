@@ -16,6 +16,12 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<setting name="" value=""/>
 	</settings> -->
 	
+	<!-- 开启mybatis自己的二级缓存 -->
+	<!-- 还需要在各Mapper文件中开启二级缓存! -->
+	<settings>
+		<setting name="cacheEnabled" value="true"/>
+	</settings>
+	
 	<!-- 自定义别名 -->
 	<typeAliases>
 		<!-- 针对单个别名定义 -->

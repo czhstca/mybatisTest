@@ -1,11 +1,14 @@
 package com.pingan.pojo;
 
+import java.io.Serializable;
+
 /**
  * Task POJO 
  * @author EX_WLJR_CHENZEHUA
  *
  */
-public class Task {
+//开启mybatis二级缓存，pojo必须序列化!
+public class Task implements Serializable {
 
 	private String inputdate;
 	

@@ -8,6 +8,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 -->
 <mapper namespace="com.pingan.mapper.TaskMapper">
 	
+	<!-- 开启本Mapper的namespace下的二级缓存 -->
+	<cache></cache>
+	
 	<!-- 通过select执行数据库查询 id：表示映射文件中的sql，也称为Statement的id -->
 	<!-- 将来sql语句都会封装到mappedStatement中 -->
 	<!-- parameterType:输入参数类型 :基本类型、HashMap、POJO、包装后的POJO-->
@@ -17,7 +20,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<!-- 如果查询出列名和POJO属性名全都不一致，不会创建POJO对象 -->
 	<!-- 只要查询出列名只要有一个和POJO属性名一样，就会创建POJO对象,其余属性全为空 -->
 	<!-- resultType可以为简单类型(结果只有一列时)，字符串，POJO，List<POJO> -->
-	<select id="findTaskByTaskName" parameterType="string" resultType="task">
+	<!-- useCache:是否使用二级缓存(针对每次查询都都需最新的数据的情况) -->
+	<!-- flushCache:清空（刷新）缓存 (一般都设置为true，避免脏读) -->
+	<select id="findTaskByTaskName" parameterType="string" resultType="task" useCache="false" flushCache="true">
 		SELECT * FROM BATCHTASK_STATUS WHERE TASKNAME=#{taskname}
 	</select>
 	
