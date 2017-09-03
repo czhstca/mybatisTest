@@ -14,10 +14,10 @@ public class Orders {
 
     private String note;
     
-    //用户信息
+    //用户信息(查询订单时关联查询用户信息(一对一关联)，使用resultMap映射到这个字段里)
     private User user;
     
-    //订单明细
+    //订单明细(查询订单及订单明细（一对多关联）,orders信息映射到Orders的其他属性，每张Orders下的详细商品信息放在 ordersDetails这个list属性中)
     private List<Orderdetail> orderdetails;
 
     public Integer getId() {

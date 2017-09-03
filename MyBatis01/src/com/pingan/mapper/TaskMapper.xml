@@ -32,6 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="findTaskByTaskNamelike" parameterType="java.lang.String" resultType="com.pingan.pojo.Task">
 		SELECT * FROM BATCHTASK_STATUS WHERE TASKNAME LIKE '%${value}%'
 	</select>
+	
 
 	<!-- 添加一条task记录 -->
 	<!-- 此时的输入参数是pojo,mybatis也是通过ognl获取对象的属性值 -->

@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 <configuration>
 
 	<!-- 加载属性文件(DB配置) -->
-	<properties resource="db.properties">  <!-- 这个文件中定义的属性第二优先被Mybatis加载 -->
+	<properties resource="db2.properties">  <!-- 这个文件中定义的属性第二优先被Mybatis加载 -->
 		<!-- 还可以配置一些属性名和属性值(这里定义的属性最先被Mybatis加载) -->
 		<!-- 建议：不要在这里定义任何属性，只将属性值定义在properties属性中,且命名最好有一定特殊性  XXXX.XXX.XXX -->
 	</properties>
@@ -16,10 +16,15 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 		<setting name="" value=""/>
 	</settings> -->
 	
+	
 	<!-- 开启mybatis自己的二级缓存 -->
 	<!-- 还需要在各Mapper文件中开启二级缓存! -->
 	<settings>
 		<setting name="cacheEnabled" value="true"/>
+		<!-- 开启延迟加载 -->
+		<setting name="lazyLoadingEnabled" value="true"/>
+		<!-- 将积极加载改为消极加载 -->
+		<setting name="aggressiveLazyLoading" value="false"/>
 	</settings>
 	
 	<!-- 自定义别名 -->

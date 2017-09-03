@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pingan.mapper.OrdersMapperCustom">
+	<!-- 根据订单id查询订单信息，关联查询创建订单的用户信息 (一对一关联)-->
+	<select id="findOrderUser" resultType="com.pingan.pojo.OrdersCustom">
+		SELECT 
+		  orders.*,
+		  USER.username,
+		  USER.sex,
+		  USER.address 
+		FROM
+		  orders,
+		  USER 
+		WHERE orders.user_id = user.id
+	</select>
+
+	<!-- ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  -->
+	
+	<resultMap id="findOrderUserMap" type="com.pingan.pojo.Orders">
+		<!-- 配置订单的映射信息 -->
+		<id column="id" property="id"></id>
+		<result column="user_id" property="userId" />
+		<result column="number" property="number"/>
+		<result column="createtime" property="createtime"/>
+		<result column="note" property="note"/>
+		
+		<!-- 配置关联用户的映射信息 -->
+		<!-- association：用于映射关联查询单个对象信息 -->
+		<!-- property:要将关联查询的用户信息映射Orders的哪个属性 -->
+		<association property="user" javaType="com.pingan.pojo.User">
+			<!-- id:关联查询用户的唯一标识 -->
+			<!-- column:标识唯一指定用户信息的类 -->
+			<!-- javaType:要映射到user的哪个属性 -->
+			<id column="user_id" property="id"/>
+			<result column="username" property="username"/>
+			<result column="sex" property="sex"/>
+			<result column="address" property="address"/>
+		</association>		
+	</resultMap>
+
+
+	<!-- 根据订单id查询订单信息，关联查询创建订单的用户信息 (一对一关联)(使用resultMap)-->
+	<select id="findOrderUserMap" resultMap="findOrderUserMap">
+		SELECT 
+		  orders.*,
+		  USER.username,
+		  USER.sex,
+		  USER.address 
+		FROM
+		  orders,
+		  USER 
+		WHERE orders.user_id = user.id
+	</select>
+	
+	
+	<!-- ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////  -->
+	
+	<resultMap type="com.pingan.pojo.Orders" id="OrdersAndDetailMap" extends="findOrderUserMap">
+		
+		<!-- 使用extends继承别的map的配置信息，就不用再重复配置了 -->
+		<!-- 配置订单的映射信息 -->
+		
+		<!-- 配置关联用户的映射信息 -->
+		
+		<!-- 配置订单明细信息 -->
+		<!-- collection:用于映射关联查询多个对象信息 -->
+		<!-- property:要讲关联查询的订单详细信息映射Orders哪个属性 -->
+		<!-- ofType：要映射到的集合属性中的POJO的类型 -->
+		<collection property="orderdetails" ofType="com.pingan.pojo.Orderdetail"> 
+			<!-- id：订单明细唯 一标识
+		 		 property:要将订单明细的唯 一标识 映射到cn.itcast.mybatis.po.Orderdetail的哪个属性
+		 	-->
+			<id column="orderdetail_id" property="id"/>
+		 	<result column="items_id" property="itemsId"/>
+		 	<result column="items_num" property="itemsNum"/>
+		 	<result column="orders_id" property="ordersId"/>
+		</collection>
+	</resultMap>
+	
+	
+	
+	
+	<!-- 根据订单id查询订单及其下所有商品详细信息（一对多映射） -->
+	<select id="findOrdersAndDetailMap" resultMap="OrdersAndDetailMap">
+	  SELECT
+	  orders.*,
+	  USER.username,
+	  USER.sex,
+	  USER.address,
+	  orderdetail.id orderdetail_id,
+	  orderdetail.items_id,
+	  orderdetail.items_num,
+	  orderdetail.orders_id
+	FROM
+	  orders,
+	  USER,
+	  orderdetail
+	WHERE orders.user_id = user.id AND orderdetail.orders_id=orders.id
+	</select>
+
+	<!--  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	
+	<resultMap type="com.pingan.pojo.User" id="UserAndItemMap">
+		<!-- 用户信息 -->
+		<id column="user_id" property="id"/>
+		<result column="username" property="username"/>
+		<result column="sex" property="sex"/>
+		<result column="address" property="address"/>
+
+
+		<!-- 订单信息
+			  一个用户对应多个订单，使用collection映射
+		-->
+		<collection property="ordersList" ofType="com.pingan.pojo.Orders">
+		 	<id column="id" property="id"/>
+		 	<result column="user_id" property="userId"/>
+			<result column="number" property="number"/>
+			<result column="createtime" property="createtime"/>
+			<result column="note" property="note"/>
+
+
+			<!-- 订单明细
+				   一个订单包括 多个明细
+		    -->
+			<collection property="orderdetails" ofType="com.pingan.pojo.Orderdetail">
+	  			<id column="orderdetail_id" property="id"/>
+			 	<result column="items_id" property="itemsId"/>
+			 	<result column="items_num" property="itemsNum"/>
+			 	<result column="orders_id" property="ordersId"/>
+		
+				<!-- 商品信息
+			  		  一个订单明细对应一个商品
+			  	-->
+		  	 	<association property="items" javaType="com.pingan.pojo.Items">
+		  	 		<id column="items_id" property="id"/>
+		  	 		<result column="items_name" property="name"/>
+		  	 		<result column="items_detail" property="detail"/>
+		  	 		<result column="items_price" property="price"/>
+		  	 	</association>
+			
+			</collection>
+		  	
+		  	
+		</collection>
+			
+	</resultMap>
+	
+	
+	<!-- 查询用户及其购买商品信息，多对多映射 -->
+	<select id="findUserAndItemMap" resultMap="UserAndItemMap">
+		SELECT 
+		  orders.*,
+		  USER.username,
+		  USER.sex,
+		  USER.address,
+		  orderdetail.id orderdetail_id,
+		  orderdetail.items_id,
+		  orderdetail.items_num,
+		  orderdetail.orders_id,
+		  items.name items_name,
+		  items.detail items_detail,
+		  items.price items_price
+		FROM
+		  orders,
+		  USER,
+		  orderdetail,
+		  items
+		WHERE orders.user_id = user.id AND orderdetail.orders_id=orders.id AND orderdetail.items_id = items.id
+				
+	</select>
+	
+	<!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+	
+	<!-- 配置延迟加载resultMap -->
+	<resultMap type="com.pingan.pojo.Orders" id="OrdersUserLazyLoadingResultMap">
+		<!-- 配置基本订单信息 -->
+		<id column="id" property="id"/>
+	 	<result column="user_id" property="userId"/>
+		<result column="number" property="number"/>
+		<result column="createtime" property="createtime"/>
+		<result column="note" property="note"/>
+		
+		<!-- 对用户信息进行延迟加载 -->
+		<!-- select:指定延迟加载要执行的select语句的id(namespace + statementId) -->
+		<!-- column:订单信息中关联用户的列 user_id -->
+		<association property="user" javaType="com.pingan.pojo.User" select="findUserById" column="user_id">
+		</association>
+	
+	</resultMap>
+	
+	
+	<!-- 查询订单信息 -->
+	<select id="findOrderUserLazyLoading" resultMap="OrdersUserLazyLoadingResultMap">
+		SELECT * FROM ORDERS
+	</select>
+	
+	<!-- 延迟加载用户信息 -->
+	<select id="findUserById" parameterType="int" resultType="com.pingan.pojo.User">
+		SELECT * FROM USER WHERE ID=#{value}
+	</select>
+	
+</mapper>

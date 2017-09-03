@@ -2,6 +2,7 @@ package com.pingan.pojo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 
@@ -18,7 +19,14 @@ public class User implements Serializable {
 	private String sex;// 性别
 	private Date birthday;// 生日
 	private String address;// 地址
-
+	private List<Orders> ordersList;  //订单列表
+	
+	public List<Orders> getOrdersList() {
+		return ordersList;
+	}
+	public void setOrdersList(List<Orders> ordersList) {
+		this.ordersList = ordersList;
+	}
 	public int getId() {
 		return id;
 	}
