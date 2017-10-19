@@ -1,3 +1,4 @@
+需要看的书:
 1.领域驱动设计......
 2.Spring 4.x 企业应用实战
 3.SpringBoot揭秘：快速构建微服务体系
@@ -5,3 +6,24 @@
 5.代码整洁之道
 6.Netty in Action
 7.企业应用架构模式
+
+需要学习的技术:
+Shiro
+SpringBoot
+Quartz
+Linux
+Nginx
+Redis
+Zookeeper
+ActiveMQ/RabbitMQ
+Docker
+Jenkins
+
+Vue/React
+Bootstrap
+
+需要看的JDK源码
+Collection  Nio  Concurrent
+
+大型网站架构需要注意的典型场景及解决方案
+架构师之路
